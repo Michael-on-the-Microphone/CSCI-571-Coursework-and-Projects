@@ -1,0 +1,49 @@
+/* Override Bootstrap's default link color */
+a.navbar-brand,
+a.navbar-brand:hover,
+a.navbar-brand:focus,
+a.navbar-brand:active,
+a.navbar-brand h5,
+a.navbar-brand:hover h5,
+a.navbar-brand:focus h5,
+a.navbar-brand:active h5 {
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+/* Footer link styling */
+footer a,
+footer a:hover,
+footer a:focus,
+footer a:active,
+footer a *,
+footer a:hover *,
+footer a:focus *,
+footer a:active *,
+a.no-decoration,
+a.no-decoration:hover,
+a.no-decoration:focus,
+a.no-decoration:active {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+/* Override Bootstrap's primary color */
+.btn-primary {
+  background-color: #024d93 !important;
+  border-color: #024d93 !important;
+}
+
+.btn-outline-primary {
+  color: #024d93 !important;
+  border-color: #024d93 !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #024d93 !important;
+  color: white !important;
+}
+
+.bg-primary {
+  background-color: #024d93 !important;
+}

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ArtistSearch</string>
+    <string name="favorites">Favorites</string>
+    <string name="login_to_see_favorites">Log in to see favorites</string>
+    <string name="powered_by_artsy">Powered by Artsy</string>
+    <string name="no_favorites">No favorites</string>
+    <string name="navigate_to_detail">Navigate to detail</string>
+</resources>

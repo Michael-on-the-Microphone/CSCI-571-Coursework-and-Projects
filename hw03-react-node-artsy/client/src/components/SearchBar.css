@@ -1,0 +1,80 @@
+.artist-card {
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.artist-card:hover .artist-card-body {
+  background-color: #004d90 !important;
+}
+
+.artist-card:active .artist-card-body {
+  background-color: #004d90 !important;
+}
+
+/* Artist details container */
+.artist-details-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Tab styling */
+.artist-tabs {
+  width: 100%;
+}
+
+.nav-tabs {
+  width: 100%;
+  display: flex;
+}
+
+/* Force tabs to take full width */
+.nav-tabs .nav-item {
+  flex: 1;
+  width: 50%;
+}
+
+.nav-tabs .nav-link {
+  width: 100%;
+  text-align: center;
+}
+
+/* Tab item styling */
+
+.nav-tabs .nav-link {
+  color: #004d90 !important;
+  font-weight: 500;
+  border: 1px solid #dee2e6;
+  border-bottom: none;
+  border-radius: 0.25rem 0.25rem 0 0;
+  padding: 0.75rem 1rem;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #004d90 !important;
+  color: white !important;
+  border-color: #004d90 !important;
+}
+
+.nav-tabs .nav-link:hover:not(.active) {
+  background-color: rgba(0, 77, 144, 0.1);
+  border-color: #dee2e6;
+}
+
+.btn-primary {
+  background-color: #024d93 !important;
+  border-color: #024d93 !important;
+}
+
+.btn-outline-primary {
+  color: #024d93 !important;
+  border-color: #024d93 !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #024d93 !important;
+  color: white !important;
+}
+
+.favorite-icon-circle {
+  background-color: #024d93 !important;
+}

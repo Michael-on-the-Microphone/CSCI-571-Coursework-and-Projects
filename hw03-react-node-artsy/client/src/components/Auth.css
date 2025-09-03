@@ -1,0 +1,23 @@
+.btn-primary {
+  background-color: #024d93 !important;
+  border-color: #024d93 !important;
+}
+
+.btn-outline-primary {
+  color: #024d93 !important;
+  border-color: #024d93 !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #024d93 !important;
+  color: white !important;
+}
+
+/* Only apply to links within the auth forms */
+.container a:not(.navbar-brand):not(.footer-link):not(.no-decoration) {
+  color: #024d93 !important;
+}
+
+.container a:not(.navbar-brand):not(.footer-link):not(.no-decoration):hover {
+  color: #013b72 !important;
+}

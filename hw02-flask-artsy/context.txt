@@ -1,0 +1,518 @@
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/app.yaml ===
+runtime: python39
+
+entrypoint: uvicorn main:app --host 0.0.0.0 --port $PORT
+
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/index.html ===
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Artist Search</title>
+    <link rel="stylesheet" href="static/reset.css">
+    <link rel="stylesheet" href="static/layout.css">
+    <link rel="stylesheet" href="static/search.css">
+    <link rel="stylesheet" href="static/results.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Artist Search</h1>
+    </header>
+
+    <main>
+        <form class="search-form" id="search-form">
+            <div class="search-container">
+              <button type="submit" class="search-icon-btn" aria-label="Search">
+                <img src="static/search_icon.png" alt="Search Icon" class="search-icon" />
+              </button>
+          
+              <input
+                type="text"
+                id="search-input"
+                class="search-input"
+                placeholder="Please enter an artist name."
+                required
+              />
+              
+              <button
+                type="button"
+                class="clear-button"
+                onclick="clearSearch()"
+                aria-label="Clear"
+              >
+                <img src="static/clear_icon.png" alt="Clear Icon" class="clear-icon" />
+              </button>
+            </div>
+        </form>
+
+        <div id="results-container">
+            <div id="results"></div>
+        </div>
+
+        <div id="loading" style="display: none;">
+            <img src="static/loading.gif" class="loading-gif" alt="Loading..." />
+        </div>
+
+        <div id="artist-details"></div>
+    </main>
+
+    <footer>
+        <p>
+            <a href="https://www.artsy.net/" rel="noopener noreferrer" aria-label="Artsy website">
+                Powered by 
+                <img src="static/artsy_logo.svg" alt="Artsy Logo" 
+                     style="width: 1.5em; height: 1.5em; padding-left: 0.25em; padding-right: 0.25em; object-fit: contain;">
+                Artsy.
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById("search-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            searchArtist();
+        });
+
+        function clearSearch() {
+            const input = document.querySelector('.search-input');
+            input.value = '';
+            input.focus();
+        }
+
+        function searchArtist() {
+            const detailsContainer = document.getElementById("artist-details");
+            detailsContainer.innerHTML = "";
+            detailsContainer.style.display = "none";
+            
+            const artistName = document.getElementById("search-input").value.trim();
+            document.getElementById("loading").style.display = "block";
+            fetch(`/search?keyword=${encodeURIComponent(artistName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("loading").style.display = "none";
+                    displayResults(data);
+                })
+                .catch(error => {
+                    console.error("Error fetching search results:", error);
+                    alert("Error fetching results. Please try again.");
+                });
+        }
+
+        function displayResults(data) {
+            const resultsContainer = document.getElementById("results");
+            resultsContainer.innerHTML = "";
+            if (!data.artists || data.artists.length === 0) {
+                resultsContainer.innerHTML = '<p class="no-results">No results found.</p>';
+                return;
+            }
+            const resultWrapper = document.createElement("div");
+            resultWrapper.classList.add("result-wrapper");
+            data.artists.forEach(artist => {
+                const artistCard = document.createElement("div");
+                artistCard.classList.add("artist-card");
+                let imageUrl = artist.image.includes("/assets/shared/missing_image.png") 
+                               ? "static/artsy_logo.svg" 
+                               : artist.image;
+                artistCard.innerHTML = `
+                    <img src="${imageUrl}" alt="${artist.name}" class="artist-img">
+                    <p>${artist.name}</p>
+                `;
+                artistCard.onclick = () => fetchArtistDetails(artist.id, artistCard);
+                resultWrapper.appendChild(artistCard);
+            });
+            resultsContainer.appendChild(resultWrapper);
+        }
+
+        function fetchArtistDetails(artistId, selectedCard) {
+            document.querySelectorAll(".artist-card").forEach(card => card.classList.remove("selected"));
+            selectedCard.classList.add("selected");
+            const detailsContainer = document.getElementById("artist-details");
+            detailsContainer.innerHTML = `<img src="static/loading.gif" class="loading-gif" alt="Loading...">`;
+            detailsContainer.style.display = "block";
+            fetch(`/artist/${artistId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let artistName = data.name || "Unknown";
+                    let birthYear = data.birthday || "";
+                    let deathYear = data.deathday ? `${data.deathday}` : "";
+                    let nationality = data.nationality || "";
+                    let biography = data.biography || "";
+                    detailsContainer.innerHTML = `
+                        <h2>${artistName} (${birthYear} - ${deathYear})</h2>
+                        <p><strong>${nationality}</strong></p>
+                        <p style="text-align: justify;">${biography}</p>
+                    `;
+                })
+                .catch(error => {
+                    detailsContainer.innerHTML = `<p>Error loading details.</p>`;
+                    console.error("Error fetching artist details:", error);
+                });
+        }
+    </script>
+</body>
+</html>
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/.DS_Store ===
+Error reading file: 'utf-8' codec can't decode byte 0xff in position 1082: invalid start byte
+
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/requirements.txt ===
+fastapi
+uvicorn
+requests
+
+
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/readme ===
+Deploy with gcloud app deploy
+https://usc-web-tech.uw.r.appspot.com/docs#/ --> docs
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/main.py ===
+from fastapi import FastAPI, HTTPException # type: ignore
+from fastapi.responses import FileResponse, HTMLResponse # type: ignore
+import requests # type: ignore
+from fastapi.staticfiles import StaticFiles # type: ignore
+
+import os
+import time
+
+
+ARTSY_TOKEN = None
+ARTSY_API_BASE_URL = "https://api.artsy.net/api"
+
+app = FastAPI()
+
+def generate_token():
+    """
+    Generate a new Artsy API token.
+    """
+    client_id = "e4837ed4288e90964c88"
+    client_secret = "28cf5dabdbc7522155b01add560fc196"
+    token_url = f"{ARTSY_API_BASE_URL}/tokens/xapp_token"
+    params = {"client_id": client_id, "client_secret": client_secret}
+    response = None
+    # Added delay between retries to avoid busy looping
+    while response is None:
+        try:
+            response = requests.post(token_url, params=params)
+        except requests.exceptions.RequestException:
+            time.sleep(1)
+    if response.status_code not in (200, 201):
+        raise HTTPException(status_code=response.status_code, detail="Error making new token")
+    json_response = response.json()
+    token = json_response["token"]
+    return token
+
+@app.get("/search")
+def search_artist(keyword: str):
+    global ARTSY_TOKEN
+    if ARTSY_TOKEN is None:
+        ARTSY_TOKEN = generate_token()
+
+    headers = {"X-Xapp-Token": ARTSY_TOKEN}
+    params = {"q": keyword, "type": "artist", "size": 10}  # Limit results
+
+    response = requests.get(f"{ARTSY_API_BASE_URL}/search", headers=headers, params=params)
+    
+    if response.status_code != 200:
+        ARTSY_TOKEN = generate_token()  # Refresh token if needed
+        response = requests.get(f"{ARTSY_API_BASE_URL}/search", headers={"X-Xapp-Token": ARTSY_TOKEN}, params=params)
+
+    data = response.json()
+    
+    # Extract artist details
+    artists = []
+    for result in data.get('_embedded', {}).get('results', []):
+        if result.get('og_type') == 'artist':
+            artist_id = result['_links']['self']['href'].split("/")[-1]
+            artist_name = result['title']
+            thumbnail_url = result['_links']['thumbnail']['href']
+            artists.append({"id": artist_id, "name": artist_name, "image": thumbnail_url})
+
+    return {"artists": artists}
+
+@app.get("/artist/{artist_id}")
+def get_artist(artist_id: str):
+    """
+    artist id --> artist info
+    artist --> "_links" --> "self" --> "href"
+
+    {
+        "type": "artist",
+        "title": "Pablo Picasso",
+        "description": null,
+        "og_type": "artist",
+        "_links": {
+          "self": {
+            "href": "https://api.artsy.net/api/artists/ --> 4d8b928b4eb68a1b2c0001f2 <-- this part"
+          },
+          "permalink": {
+            "href": "https://www.artsy.net/artist/pablo-picasso"
+          },
+          "thumbnail": {
+            "href": "https://d32dm0rphc51dk.cloudfront.net/i3rCA3IaKE-cLBnc-U5swQ/square.jpg"
+          }
+        }
+      }
+    """
+    headers = {"X-Xapp-Token": ARTSY_TOKEN}
+    response = requests.get(f"{ARTSY_API_BASE_URL}/artists/{artist_id}", headers=headers)
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail="Error getting artist details")
+    return response.json()
+
+@app.get("/", response_class=HTMLResponse)
+def serve_index():
+    """
+    Serve the index.html file as the front end.
+    """
+    file_path = os.path.join(os.path.dirname(__file__), "index.html")
+    return FileResponse(file_path, media_type="text/html")
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# For debugging purposes only. Remove or adjust for production.
+if __name__ == "__main__":
+    print(search_artist("picasso"))
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/.gcloudignore ===
+.gcloudignore
+.git
+.gitignore
+__pycache__/
+/setup.cfg
+context.txt
+.DS_Store  
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/static/.DS_Store ===
+Error reading file: 'utf-8' codec can't decode byte 0x80 in position 3131: invalid start byte
+
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/static/reset.css ===
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/static/search.css ===
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    width: 40vw;
+    margin: 0 auto; 
+  }
+  
+  .search-icon-btn,
+  .clear-button {
+
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    opacity: 50%;
+  }
+
+  .clear-button:hover {
+    opacity: 100%;
+  }
+
+  
+  .search-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 50%;
+  }
+
+  .search-icon:hover {
+    opacity: 100%;
+  }
+  
+  .clear-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    margin: 0 0.5rem;
+  }
+  .search-container:focus-within {
+    border-color: orange;
+  }
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/static/search_icon.png ===
+Error reading file: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/static/loading.gif ===
+Error reading file: 'utf-8' codec can't decode byte 0xc8 in position 6: invalid continuation byte
+
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/static/clear_icon.png ===
+Error reading file: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/static/results.css ===
+#results-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.result-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    min-height: 40vh;
+    gap: 15px;
+    scroll-behavior: smooth;
+    margin: auto;
+
+    
+}
+
+.result-wrapper:has(.artist-card:only-child) {
+    justify-content: center;
+}
+
+.artist-card {
+    flex: 0 0 auto;
+    width: 300px;
+    text-align: center;
+    font-size: 25px;
+    background-color: #205375;
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    border: 5px solid white;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.artist-card.selected {
+    background-color: #112B3C;
+}
+
+.artist-card:hover {
+    background-color: #112B3C;
+}
+
+.result-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.result-wrapper::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.artist-img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 8px solid white;
+    object-fit: cover;
+}
+
+#artist-details {
+    max-width: 80%;
+    text-align: center;
+    margin-top: 20px;
+    display: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.no-results {
+    text-align: center;
+    font-size: 1.2rem;
+    color: black;
+    background: #d0cccc;
+    padding: 10px;
+    border-radius: 10px;
+    width: 50%;
+    margin: 50px auto;
+}
+
+#results {
+    width: 100%;
+    margin: 0 auto;
+}
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/static/layout.css ===
+header {
+    background-color: #f0ecec;
+    padding-left: 1rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: normal;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100vw;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.loading-gif {
+    width: 100px;
+    height: 100px;
+}
+
+footer {
+    background-color: #182c34;
+    text-align: center;
+    font-size: 1rem;
+    color: white;
+    font-weight: bold;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+=== /Users/praveen/Desktop/USC/CSCI 571 WebTech/asignment2/static/artsy_logo.svg ===
+<svg xmlns="http://www.w3.org/2000/svg" height="1797" width="1795" version="1.1">
+<rect height="1797" width="1795" fill="#fff" />
+<path fill="#000" d="m100.25,100.25,0,1596.5,1594.5,0,0-1596.5-1594.5,0zm115.04,116.04,1364.4,0,0,1364.4-242.08,0,0-312.41-114.04,0,0,312.41-1008.3,0,0-1364.4zm401.69,164.05-234.45,604.19,121.23,0,63.332-170.05,227.26,0,62.395,170.05,121.29,0-234.45-604.19-126.6,0zm58.331,122.04,76.899,210.07-154.8,0,77.899-210.07z" />
+</svg>
+

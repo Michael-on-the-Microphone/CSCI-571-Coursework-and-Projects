@@ -1,0 +1,24 @@
+{
+  "name": "learnreact",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "cd ../client && npm install && npm run build",
+    "deploy": "npm install && npm run build && npm start",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "mongoose": "^6.7.0",
+    "node-fetch": "^2.6.7",
+    "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

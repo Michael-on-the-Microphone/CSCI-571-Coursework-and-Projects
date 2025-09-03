@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme – DayNight so it auto-switches, but no built-in ActionBar -->
+    <style name="Base.Theme.ArtistSearch" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color for the AppBar -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <!-- Icon/text color on top of the primary bar -->
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Status-bar tint (slightly darker) -->
+        <item name="android:statusBarColor">@color/purple_700</item>
+        <!-- Secondary (accent) color -->
+        <item name="colorSecondary">@color/purple_200</item>
+    </style>
+
+    <!-- “Active” theme reference -->
+    <style name="Theme.ArtistSearch" parent="Base.Theme.ArtistSearch" />
+
+    <!-- Launcher/splash theme -->
+    <style name="Theme.ArtistSearch.Launcher" parent="Theme.ArtistSearch">
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
+
+</resources>

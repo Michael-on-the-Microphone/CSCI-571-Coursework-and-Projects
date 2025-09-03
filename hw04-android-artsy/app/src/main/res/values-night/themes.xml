@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Dark-mode overrides for the same theme name -->
+    <style name="Base.Theme.ArtistSearch" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- In dark mode use the darker purple as primary -->
+        <item name="colorPrimary">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- You can leave statusBarColor to your dark surface, or repeat the primary -->
+        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="colorSecondary">@color/purple_200</item>
+    </style>
+
+    <style name="Theme.ArtistSearch" parent="Base.Theme.ArtistSearch" />
+
+    <!-- No need for a separate launcher style here; it inherits automatically -->
+
+</resources>

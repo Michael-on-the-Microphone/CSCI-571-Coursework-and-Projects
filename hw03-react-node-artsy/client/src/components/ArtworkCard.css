@@ -1,0 +1,46 @@
+.artwork-card .card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.artwork-card .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.artwork-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.artwork-image-container img {
+  transition: transform 0.3s ease;
+}
+
+.artwork-card .card:hover .artwork-image-container img {
+  transform: scale(1.05);
+}
+
+.artwork-card h6 {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.3;
+  min-height: 2.6em;
+  margin-bottom: 0;
+}
+
+.artwork-card .btn-primary {
+  transition: background-color 0.2s ease;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.artwork-card .btn-primary:hover {
+  background-color: #013b72 !important;
+  border-color: #013b72 !important;
+}

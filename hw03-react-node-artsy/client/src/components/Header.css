@@ -1,0 +1,40 @@
+.nav-link {
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.nav-link.active {
+  background-color: #024d93;
+  color: white !important;
+}
+
+.nav-link {
+  color: #212529 !important; /* Bootstrap default text color */
+}
+
+.nav-link:hover:not(.active) {
+  background-color: rgba(2, 77, 147, 0.1);
+}
+
+.user-dropdown {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.user-dropdown:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure Navbar.Brand is always black */
+.navbar-brand, .navbar-brand:hover, .navbar-brand:focus, .navbar-brand:active {
+  color: #000000 !important;
+}
+
+.navbar-brand h5 {
+  color: #000000 !important;
+  margin-bottom: 0;
+}

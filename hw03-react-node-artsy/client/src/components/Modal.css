@@ -1,0 +1,40 @@
+.modal-content {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.modal-body {
+  padding-top: 1rem !important;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  z-index: 1050;
+  background-color: transparent !important;
+  border: none;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+  width: 30px !important;
+  height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  color: #000 !important;
+  font-size: 2rem !important;
+  font-weight: 300 !important;
+  line-height: 1 !important;
+}
+
+.modal-close-btn:hover {
+  opacity: 1;
+}
+
+/* Remove default modal header padding */
+.modal-header {
+  padding: 0;
+  border-bottom: none;
+}

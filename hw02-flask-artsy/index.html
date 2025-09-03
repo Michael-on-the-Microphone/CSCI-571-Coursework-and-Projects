@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Artist Search</title>
+    <link rel="stylesheet" href="static/reset.css">
+    <link rel="stylesheet" href="static/layout.css">
+    <link rel="stylesheet" href="static/search.css">
+    <link rel="stylesheet" href="static/results.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Artist Search</h1>
+    </header>
+
+    <main>
+        <form class="search-form" id="search-form">
+            <div class="search-container">
+              <button type="submit" class="search-icon-btn" aria-label="Search">
+                <img src="static/search_icon.png" alt="Search Icon" class="search-icon" />
+              </button>
+          
+              <input
+                type="text"
+                id="search-input"
+                class="search-input"
+                placeholder="Please enter an artist name."
+                required
+              />
+              
+              <button
+                type="button"
+                class="clear-button"
+                onclick="clearSearch()"
+                aria-label="Clear"
+              >
+                <img src="static/clear_icon.png" alt="Clear Icon" class="clear-icon" />
+              </button>
+            </div>
+        </form>
+
+        <div id="results-container">
+            <div id="results"></div>
+        </div>
+
+        <div id="loading" style="display: none;">
+            <img src="static/loading.gif" class="loading-gif" alt="Loading..." />
+        </div>
+
+        <div id="artist-details"></div>
+    </main>
+
+    <footer>
+        <p>
+            <a href="https://www.artsy.net/" rel="noopener noreferrer" aria-label="Artsy website">
+                Powered by 
+                <img src="static/artsy_logo.svg" alt="Artsy Logo" 
+                     style="width: 1.5em; height: 1.5em; padding-left: 0.25em; padding-right: 0.25em; object-fit: contain;">
+                Artsy.
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById("search-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            searchArtist();
+        });
+
+        function clearSearch() {
+            const input = document.querySelector('.search-input');
+            input.value = '';
+            input.focus();
+        }
+
+        function searchArtist() {
+            const detailsContainer = document.getElementById("artist-details");
+            detailsContainer.innerHTML = "";
+            detailsContainer.style.display = "none";
+            
+            const artistName = document.getElementById("search-input").value.trim();
+            document.getElementById("loading").style.display = "block";
+            fetch(`/search?keyword=${encodeURIComponent(artistName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("loading").style.display = "none";
+                    displayResults(data);
+                })
+                .catch(error => {
+                    console.error("Error fetching search results:", error);
+                    alert("Error fetching results. Please try again.");
+                });
+        }
+
+        function displayResults(data) {
+            const resultsContainer = document.getElementById("results");
+            resultsContainer.innerHTML = "";
+            if (!data.artists || data.artists.length === 0) {
+                resultsContainer.innerHTML = '<p class="no-results">No results found.</p>';
+                return;
+            }
+            const resultWrapper = document.createElement("div");
+            resultWrapper.classList.add("result-wrapper");
+            data.artists.forEach(artist => {
+                const artistCard = document.createElement("div");
+                artistCard.classList.add("artist-card");
+                let imageUrl = artist.image.includes("/assets/shared/missing_image.png") 
+                               ? "static/artsy_logo.svg" 
+                               : artist.image;
+                artistCard.innerHTML = `
+                    <img src="${imageUrl}" alt="${artist.name}" class="artist-img">
+                    <p>${artist.name}</p>
+                `;
+                artistCard.onclick = () => fetchArtistDetails(artist.id, artistCard);
+                resultWrapper.appendChild(artistCard);
+            });
+            resultsContainer.appendChild(resultWrapper);
+        }
+
+        function fetchArtistDetails(artistId, selectedCard) {
+            document.querySelectorAll(".artist-card").forEach(card => card.classList.remove("selected"));
+            selectedCard.classList.add("selected");
+            const detailsContainer = document.getElementById("artist-details");
+            detailsContainer.innerHTML = `<img src="static/loading.gif" class="loading-gif" alt="Loading...">`;
+            detailsContainer.style.display = "block";
+            fetch(`/artist/${artistId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let artistName = data.name || "Unknown";
+                    let birthYear = data.birthday || "";
+                    let deathYear = data.deathday ? `${data.deathday}` : "";
+                    let nationality = data.nationality || "";
+                    let biography = data.biography || "";
+                    detailsContainer.innerHTML = `
+                        <h2>${artistName} (${birthYear} - ${deathYear})</h2>
+                        <p><strong>${nationality}</strong></p>
+                        <p style="text-align: justify;">${biography}</p>
+                    `;
+                })
+                .catch(error => {
+                    detailsContainer.innerHTML = `<p>Error loading details.</p>`;
+                    console.error("Error fetching artist details:", error);
+                });
+        }
+    </script>
+</body>
+</html>

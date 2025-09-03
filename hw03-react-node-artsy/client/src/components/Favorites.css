@@ -1,0 +1,113 @@
+.favorite-card {
+  height: 250px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive height adjustments */
+@media (max-width: 576px) {
+  .favorite-card {
+    height: 200px;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+  .favorite-card {
+    height: 220px;
+  }
+}
+
+.favorite-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.favorite-card-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.5) saturate(0.8);
+  z-index: 0;
+}
+
+.favorite-card-content {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+}
+
+.favorite-card-title {
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.favorite-card-middle {
+  margin-top: 10px;
+}
+
+.favorite-card-lifespan {
+  font-size: 1rem;
+  margin-bottom: 5px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.favorite-card-nationality {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.favorite-card-time {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.favorite-card-remove {
+  align-self: flex-end;
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.favorite-card-remove:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.no-favorites {
+  text-align: center;
+  padding: 50px 0;
+}
+
+.no-favorites-btn {
+  margin-top: 20px;
+  background-color: #024d93 !important;
+  border-color: #024d93 !important;
+}

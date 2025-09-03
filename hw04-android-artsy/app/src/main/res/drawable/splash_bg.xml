@@ -1,0 +1,7 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- solid white background -->
+    <item android:drawable="@android:color/white"/>
+
+    <!-- centred logo -->
+    <item android:drawable="@drawable/ic_artsy_logo"/>
+</layer-list>

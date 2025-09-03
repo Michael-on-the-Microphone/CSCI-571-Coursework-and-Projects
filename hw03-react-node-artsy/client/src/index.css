@@ -1,0 +1,164 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove outline from all buttons and links */
+button, a, .btn, .nav-link,
+button:focus, a:focus, .btn:focus, .nav-link:focus,
+button:active, a:active, .btn:active, .nav-link:active,
+button:hover, a:hover, .btn:hover, .nav-link:hover {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Footer styles for fixed positioning */
+body {
+  margin-bottom: 40px; /* Adjust based on your footer height */
+}
+
+/* Mobile-friendly styles */
+@media (max-width: 767.98px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Ensure touch targets are at least 44px */
+  button,
+  .btn,
+  .nav-link,
+  a.dropdown-item,
+  input[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Custom tab styling - specifically target the custom-tabs class */
+.custom-tabs,
+.custom-tabs .nav-tabs,
+.custom-tabs .nav {
+  width: 100%;
+  display: flex;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove any Bootstrap tab borders */
+.custom-tabs .nav::before,
+.custom-tabs .nav::after,
+.custom-tabs .nav-tabs::before,
+.custom-tabs .nav-tabs::after {
+  display: none !important;
+  border: none !important;
+  content: none !important;
+}
+
+/* Mobile-friendly tabs */
+@media (max-width: 767.98px) {
+  .custom-tabs .nav-item {
+    flex: 1;
+  }
+
+  .custom-tabs .nav-link {
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+    margin: 0 0.25rem;
+  }
+}
+
+.custom-tabs .nav-item {
+  flex: 1;
+  width: 50%;
+  padding: 0 8px; /* Add more spacing between tabs */
+  margin-bottom: 0;
+  border: none !important;
+}
+
+/* Specifically target tab links in custom-tabs */
+.custom-tabs .nav-link {
+  width: 100%;
+  text-align: center;
+  color: #004d90 !important;
+  font-weight: 500;
+  border-radius: 12px !important; /* More rounded corners throughout */
+  margin-bottom: 0;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+/* Remove outline on focus for custom-tabs */
+.custom-tabs .nav-link:focus,
+.custom-tabs .nav-link:active,
+.custom-tabs .nav-link:hover {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  text-decoration: none !important;
+}
+
+/* Active tab styling for custom-tabs */
+.custom-tabs .nav-link.active,
+.custom-tabs .nav-link.active:focus,
+.custom-tabs .nav-link.active:hover,
+.custom-tabs .nav-link.active:active {
+  background-color: #004d90 !important;
+  color: white !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+/* Ensure rounded corners for custom-tabs */
+.custom-tabs .nav-link {
+  border-radius: 12px !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Card hover effects */
+.artist-hover-card:hover .artist-card-body {
+  background-color: #004d90 !important;
+}
+
+/* Add transition for smooth color change */
+.artist-card-body {
+  transition: background-color 0.2s ease;
+  background-color: #112a39 !important;
+}

@@ -1,0 +1,43 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgThumb"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:paddingTop="4dp"/>
+
+            <!-- star (shows only if logged-in) -->
+            <ImageButton
+                android:id="@+id/btnStar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@android:drawable/btn_star_big_off"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

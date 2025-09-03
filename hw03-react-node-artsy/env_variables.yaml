@@ -1,0 +1,28 @@
+env_variables:
+  NODE_ENV: production
+  JWT_SECRET: your-secret-key-here
+  MONGODB_URI: your-mongodb-uri-here
+```
+</augment_snippet>
+
+Update app.yaml to make the includes optional:
+
+<augment_code_snippet path="app.yaml" mode="EDIT">
+```yaml
+runtime: nodejs18
+env: standard
+
+env_variables:
+  NODE_ENV: production
+
+handlers:
+  - url: /api/.*
+    script: auto
+
+  - url: /(.*\..+)$
+    static_files: client/build/\1
+    upload: client/build/(.*\..+)$
+
+  - url: /.*
+    static_files: client/build/index.html
+    upload: client/build/index.html

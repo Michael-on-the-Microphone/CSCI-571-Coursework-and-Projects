@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Spinner while loading -->
+    <ProgressBar
+        android:id="@+id/progress_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:id="@+id/scroll_details"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Artist name/title  -->
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>   <!-- centred -->
+
+            <!-- Nationality & dates  -->
+            <TextView
+                android:id="@+id/tvDates"
+                android:layout_marginTop="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>   <!-- centred + bold -->
+
+            <!-- Biography  -->
+            <TextView
+                android:id="@+id/tvBio"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:textAlignment="viewStart"/>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
