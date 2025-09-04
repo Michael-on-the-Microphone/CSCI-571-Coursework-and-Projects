@@ -24,3 +24,4 @@ An **Android** app (Jetpack Compose) that consumes the A3 backend. Users can **s
 
 ## Live link
 - **Cloud Service (uses A3 backend):** https://webtechassignment2-455603.uw.r.appspot.com/api/fetchArtistData?artistId=4d8b928b4eb68a1b2c0001f2
+- **Youtube Walkthrough Video of Features:** https://youtu.be/kiSqqkRrhtg
